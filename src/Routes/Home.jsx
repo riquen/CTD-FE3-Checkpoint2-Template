@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { useEffect } from "react";
-import Card from "../Components/Card";
+import Card from "../components/Card/Card";
+import useAxios from "../hooks/useAxios";
 
 const Home = () => {
 
@@ -9,11 +11,37 @@ const Home = () => {
     //Usando o componente <Card />
   }, []);
 
+  const { response } = useAxios({
+    method: 'get',
+    url: '/dentista',
+    // headers: JSON.stringify({ accept: '*/*' }),
+    // body: JSON.stringify({
+    //     userId: 1,
+    //     id: 19392,
+    //     title: 'title',
+    //     body: 'Sample text',
+    // }),
+  });
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+      if (response !== null) {
+          setData(response);
+      }
+  }, [response]);
+
+  useEffect(() => {
+    console.log(response, data)
+  })
+
   return (
     <>
       <h1>Home</h1>
       <div className="card-grid container">
-        <Card />
+        {data.map((item) => (
+          <Card key={item.matricula} nome={item.nome} sobrenome={item.sobrenome} />
+        ))}
       </div>
     </>
   );
