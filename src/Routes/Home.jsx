@@ -14,13 +14,6 @@ const Home = () => {
   const { response } = useAxios({
     method: 'get',
     url: '/dentista',
-    // headers: JSON.stringify({ accept: '*/*' }),
-    // body: JSON.stringify({
-    //     userId: 1,
-    //     id: 19392,
-    //     title: 'title',
-    //     body: 'Sample text',
-    // }),
   });
 
   const [data, setData] = useState([]);
