@@ -33,7 +33,7 @@ const Home = () => {
       <h1>Home</h1>
       <div className="card-grid container">
         {data.map((item) => (
-          <Card key={item.matricula} nome={item.nome} sobrenome={item.sobrenome} />
+          <Card key={item.matricula} nome={item.nome} sobrenome={item.sobrenome} usuario={item.usuario.username} />
         ))}
       </div>
     </>

@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
+import { useTheme } from "../../hooks/useTheme";
 import styles from "./Card.module.css";
 
-const Card = ({nome, sobrenome}) => {
+const Card = ({nome, sobrenome, usuario}) => {
+  const { theme } = useTheme()
 
   return (
     <>
       {/* //Na linha seguinte deverá ser feito um teste se a aplicação
         // está em dark mode e deverá utilizar o css correto */}
-      <div className={`card`}>
+      <div className={`card ${theme === 'dark' && styles.cardDark}`}>
         <img
           className="card-img-top"
           src="/images/doctor.jpg"
@@ -18,6 +20,7 @@ const Card = ({nome, sobrenome}) => {
           que vem da API */}
           <Link to='/detail'>
             <h5 className={`card-title ${styles.title}`}>{nome} {sobrenome}</h5>
+            <p>{usuario}</p>
           </Link>
         </div>
       </div>
