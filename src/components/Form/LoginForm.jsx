@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import { useState } from "react";
 import useAxios from "../../hooks/useAxios";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { useTheme } from "../../hooks/useTheme";
 import styles from "./Form.module.css";
 
@@ -46,6 +48,8 @@ const LoginForm = () => {
       },
     })
 
+    return response
+
     //lembre-se que essa rota vai retornar um Bearer Token e o mesmo deve ser salvo
     //no localstorage para ser usado em chamadas futuras
     //Com tudo ocorrendo corretamente, o usuário deve ser redirecionado a página principal,com react-router
@@ -61,6 +65,12 @@ const LoginForm = () => {
     setPassword(e.target.value)
     setInvalidPassword(false)
   }
+
+  const [token, setToken] = useLocalStorage('', 'token')
+
+  useEffect(() => {
+    setToken(response.token)
+  }, [response, setToken])
 
   return (
     <>
