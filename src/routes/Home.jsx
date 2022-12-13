@@ -1,39 +1,24 @@
-import { useState } from "react";
 import { useEffect } from "react";
 import Card from "../components/Card/Card";
 import useAxios from "../hooks/useAxios";
 
 const Home = () => {
+  const { response, fetchData } = useAxios('');
 
   useEffect(() => {
-    //Nesse useEffect, deverá ser obtido todos os dentistas da API
-    //Armazena-los em um estado para posteriormente fazer um map
-    //Usando o componente <Card />
-  }, []);
-
-  const { response } = useAxios({
-    method: 'get',
-    url: '/dentista',
-  });
-
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-      if (response !== null) {
-          setData(response);
-      }
-  }, [response]);
-
-  useEffect(() => {
-    console.log(response, data)
-  })
+    fetchData(
+    {
+      method: 'get',
+      url: '/dentista',
+    })
+  }, [])
 
   return (
     <>
       <h1>Home</h1>
       <div className="card-grid container">
-        {data.map((item) => (
-          <Card key={item.matricula} nome={item.nome} sobrenome={item.sobrenome} usuario={item.usuario.username} />
+        {response && response.map((data) => (
+          <Card key={data.matricula} id={data.matricula} nome={data.nome} sobrenome={data.sobrenome} usuario={data.usuario.username} />
         ))}
       </div>
     </>

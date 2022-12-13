@@ -1,8 +1,11 @@
 import { useEffect } from "react";
+import { useTheme } from "../../hooks/useTheme";
 import ScheduleFormModal from "../ScheduleFormModal/ScheduleFormModal";
 import styles from "./DetailCard.module.css";
 
 const DetailCard = () => {
+  const { theme } = useTheme()
+
 
   useEffect(() => {
     //Nesse useEffect, você vai fazer um fetch na api passando o 
@@ -17,7 +20,7 @@ const DetailCard = () => {
         {/* //Na linha seguinte deverá ser feito um teste se a aplicação
         // está em dark mode e deverá utilizar o css correto */}
         <div
-          className={`card-body row`}
+          className={`card-body row ${theme === 'dark' && styles.cardDark}`}
         >
           <div className="col-sm-12 col-lg-6">
             <img
@@ -42,8 +45,7 @@ const DetailCard = () => {
               <button
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
-                className={`btn btn-light ${styles.button
-                  }`}
+                className={`btn ${theme === 'dark' ? 'btn-dark' : 'btn-light'} ${styles.button}`}
               >
                 Marcar consulta
               </button>

@@ -1,31 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 
 axios.defaults.baseURL = 'https://dhodonto.ctdprojetos.com.br';
 
-const useAxios = ({ url, method, body = null, headers = null }) => {
-    const [response, setResponse] = useState(null);
+const useAxios = () => {
+    const [response, setResponse] = useState(undefined);
     const [error, setError] = useState('');
-    const [loading, setloading] = useState(true);
+    const [loading, setLoading] = useState(true);
 
-    const fetchData = () => {
-        axios[method](url, JSON.parse(headers), JSON.parse(body))
-            .then((res) => {
-                setResponse(res.data);
-            })
-            .catch((err) => {
-                setError(err);
-            })
-            .finally(() => {
-                setloading(false);
-            });
+    const fetchData = async (params) => {
+        try {
+            const result = await axios.request(params)
+            setResponse(result.data)
+        } catch (error) {
+            setError(error);
+        } finally {
+            setLoading(false);
+        }
     };
 
-    useEffect(() => {
-        fetchData();
-    }, [method, url, body, headers]);
-
-    return { response, error, loading };
+    return { response, error, loading, fetchData };
 };
 
 export default useAxios;

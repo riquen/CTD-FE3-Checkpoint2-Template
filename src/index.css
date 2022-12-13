@@ -48,10 +48,6 @@ form{
   margin: 0 auto;
 }
 
-.btn-light{
-  background-color: rgb(214, 214, 214);
-}
-
 .card-grid{
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -88,6 +84,10 @@ tr:nth-child(even) {
 }
 
 .dark h5{
+  color: white;
+}
+
+.dark p {
   color: white;
 }
 

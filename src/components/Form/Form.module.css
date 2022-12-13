@@ -13,3 +13,13 @@
 .inputSpacing+.inputSpacing{
   margin: 1rem 0;
 }
+
+.invalid {
+  border: 2px solid #ff7070;
+  background-color: lightpink;
+}
+
+.invalidSpan {
+  color: #ff7070;
+  height: 24px;
+}
