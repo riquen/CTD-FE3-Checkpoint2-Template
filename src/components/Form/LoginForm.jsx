@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useAxios from "../../hooks/useAxios";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { useTheme } from "../../hooks/useTheme";
@@ -12,6 +13,7 @@ const LoginForm = () => {
   const [login, setLogin] = useState('')
   const [password, setPassword] = useState('')
   const { response, fetchData } = useAxios('')
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -70,7 +72,8 @@ const LoginForm = () => {
 
   useEffect(() => {
     setToken(response.token)
-  }, [response, setToken])
+    token && navigate('/')
+  }, [navigate, response, setToken, token])
 
   return (
     <>
