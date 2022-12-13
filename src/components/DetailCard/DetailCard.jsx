@@ -3,9 +3,8 @@ import { useTheme } from "../../hooks/useTheme";
 import ScheduleFormModal from "../ScheduleFormModal/ScheduleFormModal";
 import styles from "./DetailCard.module.css";
 
-const DetailCard = () => {
+const DetailCard = ({nome, sobrenome, usuario}) => {
   const { theme } = useTheme()
-
 
   useEffect(() => {
     //Nesse useEffect, você vai fazer um fetch na api passando o 
@@ -28,15 +27,16 @@ const DetailCard = () => {
               src="/images/doctor.jpg"
               alt="doctor placeholder"
             />
+            {/* key={response.matricula} id={response.matricula} nome={response.nome} sobrenome={response.sobrenome} usuario={response.usuario.username} */}
           </div>
           <div className="col-sm-12 col-lg-6">
             <ul className="list-group">
-              <li className="list-group-item">Nome: {'Nome do Dentista'}</li>
+              <li className="list-group-item">Nome: {nome}</li>
               <li className="list-group-item">
-                Sobrenome: {'Sobrenome do Dentista'}
+                Sobrenome: {sobrenome}
               </li>
               <li className="list-group-item">
-                Usuário: {'Nome de usuário do Dentista'}
+                Usuário: {usuario}
               </li>
             </ul>
             <div className="text-center">

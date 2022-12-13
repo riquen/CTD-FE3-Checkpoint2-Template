@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import styles from "./ScheduleForm.module.css";
+import response from "../../Form/LoginForm"
 
 const ScheduleForm = () => {
   useEffect(() => {
@@ -19,6 +20,7 @@ const ScheduleForm = () => {
     <>
       {/* //Na linha seguinte deverá ser feito um teste se a aplicação
         // está em dark mode e deverá utilizar o css correto */}
+      <div className={`card ${theme === 'dark' && styles.cardDark}`}></div>
       <div
         className={`text-center container}`
         }
@@ -31,10 +33,11 @@ const ScheduleForm = () => {
               </label>
               <select className="form-select" name="dentist" id="dentist">
                 {/*Aqui deve ser feito um map para listar todos os dentistas*/}
-                <option key={'Matricula do dentista'} value={'Matricula do dentista'}>
-                  {`Nome Sobrenome`}
-                </option>
-              </select>
+                {response && response.map((data) => (
+              <option key={data.matricula} value={data.matricula}>
+                {data.nome}+{' '}+{data.sobrenome}))}    
+              </option>
+            </select>
             </div>
             <div className="col-sm-12 col-lg-6">
               <label htmlFor="patient" className="form-label">

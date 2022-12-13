@@ -18,7 +18,7 @@ const Card = ({id, nome, sobrenome, usuario}) => {
         <div className={`card-body ${styles.CardBody}`}>
           {/* Na linha seguinte o link deverá utilizar a matricula, nome e sobrenome do dentista
           que vem da API */}
-          <Link to={`/detail/${id}`}>
+          <Link to={`/detail/${id}`} key={id} nome={nome} sobrenome={sobrenome} usuario={usuario}>
             <h5 className={`card-title ${styles.title}`}>{nome} {sobrenome}</h5>
             <p>{usuario}</p>
           </Link>
