@@ -1,11 +1,31 @@
+import { useState } from "react";
 import { useEffect } from "react";
 import styles from "./ScheduleForm.module.css";
+import useAxios from "../../../hooks/useAxios";
 
 const ScheduleForm = () => {
+
+  const { response, fetchData } = useAxios('');
+  const [dentista, setDentista] = useState([])
+  const [paciente, setPaciente] = useState([])
+
   useEffect(() => {
+    
+    fetchData(
+      {
+        method: 'get',
+        url: '/dentista',
+      })
+    fetchData(
+      {
+        method: 'get',
+        url: '/paciente',
+      })
+    }, []);
+
     //Nesse useEffect, você vai fazer um fetch na api buscando TODOS os dentistas
     //e pacientes e carregar os dados em 2 estados diferentes
-  }, []);
+  
 
   const handleSubmit = (event) => {
     //Nesse handlesubmit você deverá usar o preventDefault,
@@ -31,9 +51,11 @@ const ScheduleForm = () => {
               </label>
               <select className="form-select" name="dentist" id="dentist">
                 {/*Aqui deve ser feito um map para listar todos os dentistas*/}
-                <option key={'Matricula do dentista'} value={'Matricula do dentista'}>
-                  {`Nome Sobrenome`}
-                </option>
+                {response && response.map((data) => (
+          <option key={data.matricula} id={data.matricula} nome={data.nome} sobrenome={data.sobrenome} usuario={data.usuario.username}>
+          {data.nome+' '+data.sobrenome}
+          </option>
+          ))}
               </select>
             </div>
             <div className="col-sm-12 col-lg-6">
