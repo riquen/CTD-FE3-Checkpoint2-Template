@@ -1,34 +1,42 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./ScheduleForm.module.css";
-import response from "../../Form/LoginForm"
-import useAxios from "../../../hooks/useAxios";
+import { useTheme } from "../../../hooks/useTheme";
 
 const ScheduleForm = () => {
-
-  const { response, fetchData } = useAxios('');
+  const { theme } = useTheme()
   const [dentista, setDentista] = useState([])
   const [paciente, setPaciente] = useState([])
 
   useEffect(() => {
-    
-    fetchData(
-      {
-        method: 'get',
-        url: '/dentista',
-      })
-    fetchData(
-      {
-        method: 'get',
-        url: '/paciente',
-      })
-    }, []);
+    fetch('https://dhodonto.ctdprojetos.com.br/dentista')
+    .then(
+      response => {
+        response.json()
+        .then(data => {
+            setDentista(data)
+          }
+        )
+      }
+    )
 
-    //Nesse useEffect, você vai fazer um fetch na api buscando TODOS os dentistas
-    //e pacientes e carregar os dados em 2 estados diferentes
+    fetch('https://dhodonto.ctdprojetos.com.br/paciente')
+    .then(
+      response => {
+        response.json()
+        .then(data => {
+            setPaciente(data.body)
+          }
+        )
+      }
+    )
+  }, [])
+
+  //Nesse useEffect, você vai fazer um fetch na api buscando TODOS os dentistas
+  //e pacientes e carregar os dados em 2 estados diferentes
   
 
   const handleSubmit = (event) => {
+    event.preventDefault()
     //Nesse handlesubmit você deverá usar o preventDefault,
     //obter os dados do formulário e enviá-los no corpo da requisição 
     //para a rota da api que marca a consulta
@@ -53,11 +61,11 @@ const ScheduleForm = () => {
               </label>
               <select className="form-select" name="dentist" id="dentist">
                 {/*Aqui deve ser feito um map para listar todos os dentistas*/}
-                {response && response.map((data) => (
-          <option key={data.matricula} id={data.matricula} nome={data.nome} sobrenome={data.sobrenome} usuario={data.usuario.username}>
-          {data.nome+' '+data.sobrenome}
-          </option>
-          ))}
+                {dentista && dentista.map((dentista) => (
+                  <option key={dentista.matricula}>
+                    {`${dentista.nome} ${dentista.sobrenome}`}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="col-sm-12 col-lg-6">
@@ -66,9 +74,11 @@ const ScheduleForm = () => {
               </label>
               <select className="form-select" name="patient" id="patient">
                 {/*Aqui deve ser feito um map para listar todos os pacientes*/}
-                <option key={'Matricula do paciente'} value={'Matricula do paciente'}>
-                  {`Nome Sobrenome`}
-                </option>
+                {paciente && paciente.map((paciente) => (
+                  <option key={paciente.matricula}>
+                    {`${paciente.nome} ${paciente.sobrenome}`}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
@@ -89,8 +99,7 @@ const ScheduleForm = () => {
             {/* //Na linha seguinte deverá ser feito um teste se a aplicação
         // está em dark mode e deverá utilizar o css correto */}
             <button
-              className={`btn btn-light ${styles.button
-                }`}
+              className={`btn btn-light ${theme === 'dark' && 'btn-dark'}`}
               type="submit"
             >
               Schedule
