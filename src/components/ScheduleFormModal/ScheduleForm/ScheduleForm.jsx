@@ -1,20 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./ScheduleForm.module.css";
 import { useTheme } from "../../../hooks/useTheme";
 import useAxios from "../../../hooks/useAxios";
+import { useNavigate } from "react-router-dom";
 
 const ScheduleForm = () => {
   const { theme } = useTheme()
   const { response: dentista, fetchData: fetchDentista } = useAxios('');
   const { response: paciente, fetchData: fetchPaciente } = useAxios('');
+  const { response: consulta, error, fetchData: fetchConsulta } = useAxios('');
+  const [date, setDate] = useState('')
+  const navigate = useNavigate()
   
   useEffect(() => {
     fetchDentista({
-      method: 'GET',
+      method: 'get',
       url: '/dentista'
     })
     fetchPaciente({
-      method: 'GET',
+      method: 'get',
       url: '/paciente'
     })
   }, [fetchDentista, fetchPaciente])
@@ -25,10 +29,30 @@ const ScheduleForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    //Nesse handlesubmit você deverá usar o preventDefault,
+
+    const token = localStorage.getItem('token')
+
+    fetchConsulta({
+      method: 'post',
+      url: '/consulta',
+      headers: {
+        // verificar se o accept foi aceito
+        accept: '*/*',
+        // pode ser que o "a" seja maiúsculo 
+        authorization: `Bearer ${token}`
+        // talvez tenha que colocar content-type
+      },
+      data: {
+        dentista: dentista.matricula,
+        matricula: paciente.body.matricula,
+        dataHoraAgendamento: date,
+      },
+    })
+
+    error ? alert('Erro ao agendar consulta!') : alert('Consulta agendada com sucesso!')
+    !error && navigate('/')
     //obter os dados do formulário e enviá-los no corpo da requisição 
     //para a rota da api que marca a consulta
-    //lembre-se que essa rota precisa de um Bearer Token para funcionar.
     //Lembre-se de usar um alerta para dizer se foi bem sucedido ou ocorreu um erro
   };
 
@@ -80,6 +104,8 @@ const ScheduleForm = () => {
                 id="appointmentDate"
                 name="appointmentDate"
                 type="datetime-local"
+                onChange={(e) => setDate(e.target.value)}
+                value={date}
               />
             </div>
           </div>
