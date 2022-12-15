@@ -25,7 +25,7 @@ const DetailCard = () => {
     //substituídas com as informações que vem da api
     response && (
       <>
-        <h1>Detail about Dentist {response.nome} </h1>
+        <h1>Detalhes sobre {response.nome} </h1>
         <section className="card col-sm-12 col-lg-6 container">
           {/* //Na linha seguinte deverá ser feito um teste se a aplicação
           // está em dark mode e deverá utilizar o css correto */}
@@ -57,7 +57,7 @@ const DetailCard = () => {
                   data-bs-target="#exampleModal"
                   className={`btn ${theme === 'dark' ? 'btn-dark' : 'btn-light'} ${styles.button}`}
                 >
-                  Marcar consulta
+                  Agendar consulta
                 </button>
               </div>
             </div>

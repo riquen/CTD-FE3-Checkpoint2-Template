@@ -29,6 +29,8 @@ const ScheduleForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
+    const dentistaData = event.target.dentist.value
+    const pacienteData = event.target.patient.value
 
     const token = localStorage.getItem('token')
 
@@ -38,17 +40,19 @@ const ScheduleForm = () => {
       headers: {
         // verificar se o accept foi aceito
         accept: '*/*',
+        'Content-Type': 'application/json',
         // pode ser que o "a" seja maiúsculo 
         authorization: `Bearer ${token}`
         // talvez tenha que colocar content-type
       },
       data: {
-        dentista: dentista.matricula,
-        matricula: paciente.body.matricula,
         dataHoraAgendamento: date,
-      },
+        paciente: {
+          matricula: pacienteData},
+        dentista: {
+          matricula: dentistaData}, 
+      }
     })
-
     error ? alert('Erro ao agendar consulta!') : alert('Consulta agendada com sucesso!')
     !error && navigate('/')
     //obter os dados do formulário e enviá-los no corpo da requisição 
@@ -69,12 +73,12 @@ const ScheduleForm = () => {
           <div className={`row ${styles.rowSpacing}`}>
             <div className="col-sm-12 col-lg-6">
               <label htmlFor="dentist" className="form-label">
-                Dentist
+                Dentista
               </label>
               <select className="form-select" name="dentist" id="dentist">
                 {/*Aqui deve ser feito um map para listar todos os dentistas*/}
                 {dentista && dentista.map((dentista) => (
-                  <option key={dentista.matricula}>
+                  <option key={dentista.matricula} value={dentista.matricula}>
                     {`${dentista.nome} ${dentista.sobrenome}`}
                   </option>
                 ))}
@@ -82,12 +86,12 @@ const ScheduleForm = () => {
             </div>
             <div className="col-sm-12 col-lg-6">
               <label htmlFor="patient" className="form-label">
-                Patient
+                Paciente
               </label>
               <select className="form-select" name="patient" id="patient">
                 {/*Aqui deve ser feito um map para listar todos os pacientes*/}
                 {paciente.body && paciente.body.map((paciente) => (
-                  <option key={paciente.matricula}>
+                  <option key={paciente.matricula} value={paciente.matricula}>
                     {`${paciente.nome} ${paciente.sobrenome}`}
                   </option>
                 ))}
@@ -116,7 +120,7 @@ const ScheduleForm = () => {
               className={`btn btn-light ${theme === 'dark' && 'btn-dark'}`}
               type="submit"
             >
-              Schedule
+              Agendar
             </button>
           </div>
         </form>
