@@ -53,6 +53,8 @@ const ScheduleForm = () => {
           matricula: dentistaData}, 
       }
     })
+    /*!token ? alert('Faça login para agendar consultas') : fetchConsulta()*/
+
     error ? alert('Erro ao agendar consulta!') : alert('Consulta agendada com sucesso!')
     !error && navigate('/')
     //obter os dados do formulário e enviá-los no corpo da requisição 
