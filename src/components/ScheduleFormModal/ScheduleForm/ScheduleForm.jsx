@@ -1,35 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styles from "./ScheduleForm.module.css";
 import { useTheme } from "../../../hooks/useTheme";
+import useAxios from "../../../hooks/useAxios";
 
 const ScheduleForm = () => {
   const { theme } = useTheme()
-  const [dentista, setDentista] = useState([])
-  const [paciente, setPaciente] = useState([])
-
+  const { response: dentista, fetchData: fetchDentista } = useAxios('');
+  const { response: paciente, fetchData: fetchPaciente } = useAxios('');
+  
   useEffect(() => {
-    fetch('https://dhodonto.ctdprojetos.com.br/dentista')
-    .then(
-      response => {
-        response.json()
-        .then(data => {
-            setDentista(data)
-          }
-        )
-      }
-    )
-
-    fetch('https://dhodonto.ctdprojetos.com.br/paciente')
-    .then(
-      response => {
-        response.json()
-        .then(data => {
-            setPaciente(data.body)
-          }
-        )
-      }
-    )
-  }, [])
+    fetchDentista({
+      method: 'GET',
+      url: '/dentista'
+    })
+    fetchPaciente({
+      method: 'GET',
+      url: '/paciente'
+    })
+  }, [fetchDentista, fetchPaciente])
 
   //Nesse useEffect, você vai fazer um fetch na api buscando TODOS os dentistas
   //e pacientes e carregar os dados em 2 estados diferentes
@@ -74,7 +62,7 @@ const ScheduleForm = () => {
               </label>
               <select className="form-select" name="patient" id="patient">
                 {/*Aqui deve ser feito um map para listar todos os pacientes*/}
-                {paciente && paciente.map((paciente) => (
+                {paciente.body && paciente.body.map((paciente) => (
                   <option key={paciente.matricula}>
                     {`${paciente.nome} ${paciente.sobrenome}`}
                   </option>
