@@ -12,7 +12,7 @@ const LoginForm = () => {
   const [invalidPassword, setInvalidPassword] = useState(false)
   const [login, setLogin] = useState('')
   const [password, setPassword] = useState('')
-  const { response, fetchData } = useAxios('')
+  const { response, error, fetchData } = useAxios('')
   const navigate = useNavigate()
 
   const handleSubmit = (e) => {
@@ -71,9 +71,15 @@ const LoginForm = () => {
   const [token, setToken] = useLocalStorage('', 'token')
 
   useEffect(() => {
-    setToken(response.token)
-    token && navigate('/')
-  }, [navigate, response, setToken, token])
+    if (response.token===undefined){
+      if (error!==''){
+      alert('Deu erro')
+    }
+    } else {
+      setToken(response.token)
+      navigate('/')
+    }
+  }, [response, error])
 
   return (
     <>
